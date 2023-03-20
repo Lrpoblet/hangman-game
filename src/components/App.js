@@ -1,3 +1,4 @@
+import { useState } from 'react';
 // import {Route} from 'react-router-dom';
 // import callToApi from '../services/api';
 // import ls from '../services/localStorage';
@@ -6,10 +7,15 @@ import '../styles/App.scss';
 
 function App() {
   // VARIABLES ESTADO
+  const [numberOfErrors, setnumberOfErrors] = useState(0);
 
   // USE EFFECT
 
   // FUNCIONES HANDLER
+  function handleClick(ev) {
+    ev.preventDefault();
+    setnumberOfErrors(numberOfErrors + 1);
+  }
 
   // FUNCIONES Y VARIABLES QUE AYUDEN A RENDERIZAR HTML
 
@@ -60,7 +66,7 @@ function App() {
             />
           </form>
         </section>
-        <section className="dummy error-5">
+        <section className={`dummy error-${numberOfErrors}`}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
@@ -75,6 +81,7 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
+        <button onClick={handleClick}>Incrementar</button>
       </main>
     </div>
   );
