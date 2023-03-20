@@ -1,4 +1,3 @@
-// import {useEffect, useState} from 'react';
 // import {Route} from 'react-router-dom';
 // import callToApi from '../services/api';
 // import ls from '../services/localStorage';
@@ -49,14 +48,13 @@ function App() {
             </ul>
           </div>
           <form className="form">
-            <label className="title" for="last-letter">
+            <label className="title" htmlFor="last-letter">
               Write a letter:
             </label>
             <input
-              autocomplete="off"
+              autoComplete="off"
               className="form__input"
-              maxlength="1"
-              type="text"
+              maxLength="text"
               name="last-letter"
               id="last-letter"
             />
