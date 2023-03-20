@@ -8,6 +8,7 @@ import '../styles/App.scss';
 function App() {
   // VARIABLES ESTADO
   const [numberOfErrors, setnumberOfErrors] = useState(0);
+  const [lastLetter, setlastLetter] = useState('');
 
   // USE EFFECT
 
@@ -15,6 +16,10 @@ function App() {
   function handleClick(ev) {
     ev.preventDefault();
     setnumberOfErrors(numberOfErrors + 1);
+  }
+
+  function handleLastLetter(ev) {
+    setlastLetter(ev.target.value);
   }
 
   // FUNCIONES Y VARIABLES QUE AYUDEN A RENDERIZAR HTML
@@ -60,9 +65,11 @@ function App() {
             <input
               autoComplete="off"
               className="form__input"
-              maxLength="text"
+              maxLength="1"
               name="last-letter"
               id="last-letter"
+              // value={lastLetter}
+              onInput={handleLastLetter}
             />
           </form>
         </section>
