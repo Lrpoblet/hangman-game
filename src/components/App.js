@@ -9,6 +9,7 @@ function App() {
   // VARIABLES ESTADO
   const [numberOfErrors, setnumberOfErrors] = useState(0);
   const [lastLetter, setlastLetter] = useState('');
+  const [allowed, setAllowed] = useState(false);
 
   // USE EFFECT
 
@@ -18,8 +19,19 @@ function App() {
     setnumberOfErrors(numberOfErrors + 1);
   }
 
+  const handleFormSubmit = (ev) => {
+    ev.preventDefault();
+  };
+
   function handleLastLetter(ev) {
-    setlastLetter(ev.target.value);
+    if (/^[a-z]$/.test(ev.target.value)) {
+      setlastLetter(ev.target.value);
+      setAllowed(false);
+    } else if (ev.target.value === '') {
+      setAllowed(false);
+    } else {
+      setAllowed(true);
+    }
   }
 
   // FUNCIONES Y VARIABLES QUE AYUDEN A RENDERIZAR HTML
@@ -58,7 +70,7 @@ function App() {
               <li className="letter">x</li>
             </ul>
           </div>
-          <form className="form">
+          <form className="form" onSubmit={handleFormSubmit}>
             <label className="title" htmlFor="last-letter">
               Write a letter:
             </label>
@@ -68,9 +80,11 @@ function App() {
               maxLength="1"
               name="last-letter"
               id="last-letter"
-              // value={lastLetter}
               onInput={handleLastLetter}
             />
+            <p className={allowed ? 'visible' : 'hidden'}>
+              Is not an allowed character
+            </p>
           </form>
         </section>
         <section className={`dummy error-${numberOfErrors}`}>
