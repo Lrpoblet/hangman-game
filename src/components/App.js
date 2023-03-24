@@ -7,8 +7,10 @@ import '../styles/App.scss';
 
 function App() {
   // VARIABLES ESTADO
-  const [numberOfErrors, setnumberOfErrors] = useState(0);
-  const [lastLetter, setlastLetter] = useState('');
+  const [word, setWord] = useState('pepino');
+  const [userLetters, setUserLetters] = useState([]);
+  const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [lastLetter, setLastLetter] = useState('');
   const [allowed, setAllowed] = useState(false);
 
   // USE EFFECT
@@ -16,7 +18,7 @@ function App() {
   // FUNCIONES HANDLER
   function handleClick(ev) {
     ev.preventDefault();
-    setnumberOfErrors(numberOfErrors + 1);
+    setNumberOfErrors(numberOfErrors + 1);
   }
 
   const handleFormSubmit = (ev) => {
@@ -24,10 +26,15 @@ function App() {
   };
 
   function handleLastLetter(ev) {
-    if (/^[a-z]$/.test(ev.target.value)) {
-      setlastLetter(ev.target.value);
+    const userLetter = ev.target.value;
+
+    if (/^[a-z]$/.test(userLetter)) {
+      setLastLetter(userLetter);
+      if (!userLetters.includes(userLetter)) {
+        setUserLetters([...userLetters, userLetter]);
+      }
       setAllowed(false);
-    } else if (ev.target.value === '') {
+    } else if (userLetter === '') {
       setAllowed(false);
     } else {
       setAllowed(true);
@@ -35,6 +42,20 @@ function App() {
   }
 
   // FUNCIONES Y VARIABLES QUE AYUDEN A RENDERIZAR HTML
+  function renderSolutionLetters() {
+    const wordLetters = word.split('');
+    return wordLetters.map((letter, index) => {
+      if (userLetters.includes(letter)) {
+        return (
+          <li className="letter" key={index}>
+            {letter}
+          </li>
+        );
+      } else {
+        return <li className="letter" key={index}></li>;
+      }
+    });
+  }
 
   // HTML EN EL RETURN
 
@@ -47,18 +68,7 @@ function App() {
         <section>
           <div className="solution">
             <h2 className="title">Solution:</h2>
-            <ul className="letters">
-              <li className="letter">k</li>
-              <li className="letter">a</li>
-              <li className="letter"></li>
-              <li className="letter">a</li>
-              <li className="letter">k</li>
-              <li className="letter">r</li>
-              <li className="letter"></li>
-              <li className="letter">k</li>
-              <li className="letter">e</li>
-              <li className="letter">r</li>
-            </ul>
+            <ul className="letters">{renderSolutionLetters()}</ul>
           </div>
           <div className="error">
             <h2 className="title">Failed letters:</h2>
