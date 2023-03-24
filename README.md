@@ -1,1 +1,3 @@
-# hangman-game
+# Hangman Game
+
+Under construction, stay tuned!
