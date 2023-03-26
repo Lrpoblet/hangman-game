@@ -7,20 +7,16 @@ import '../styles/App.scss';
 
 function App() {
   // VARIABLES ESTADO
-  const [word, setWord] = useState('pepino');
-  const [userLetters, setUserLetters] = useState([]);
-  const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [word, setWord] = useState('hola');
+  const wordLetters = word.split('');
   const [lastLetter, setLastLetter] = useState('');
   const [allowed, setAllowed] = useState(false);
+  const [userLetters, setUserLetters] = useState([]);
+  const { errorLettersList, numErrors } = renderErrorLetters();
 
   // USE EFFECT
 
   // FUNCIONES HANDLER
-  function handleClick(ev) {
-    ev.preventDefault();
-    setNumberOfErrors(numberOfErrors + 1);
-  }
-
   const handleFormSubmit = (ev) => {
     ev.preventDefault();
   };
@@ -43,7 +39,6 @@ function App() {
 
   // FUNCIONES Y VARIABLES QUE AYUDEN A RENDERIZAR HTML
   function renderSolutionLetters() {
-    const wordLetters = word.split('');
     return wordLetters.map((letter, index) => {
       if (userLetters.includes(letter)) {
         return (
@@ -55,6 +50,26 @@ function App() {
         return <li className="letter" key={index}></li>;
       }
     });
+  }
+
+  function renderErrorLetters() {
+    // filtramos primero las letras que no se encuentran en la palabra
+    const errorLetters = userLetters.filter(
+      (letter) => !wordLetters.includes(letter)
+    );
+
+    const errorLettersList = errorLetters.map((letter, index) => (
+      <li className="letter" key={index}>
+        {letter}
+      </li>
+    ));
+
+    const numErrors = errorLetters.length;
+
+    return {
+      errorLettersList,
+      numErrors,
+    };
   }
 
   // HTML EN EL RETURN
@@ -72,13 +87,7 @@ function App() {
           </div>
           <div className="error">
             <h2 className="title">Failed letters:</h2>
-            <ul className="letters">
-              <li className="letter">f</li>
-              <li className="letter">q</li>
-              <li className="letter">h</li>
-              <li className="letter">p</li>
-              <li className="letter">x</li>
-            </ul>
+            <ul className="letters">{errorLettersList}</ul>
           </div>
           <form className="form" onSubmit={handleFormSubmit}>
             <label className="title" htmlFor="last-letter">
@@ -97,7 +106,7 @@ function App() {
             </p>
           </form>
         </section>
-        <section className={`dummy error-${numberOfErrors}`}>
+        <section className={`dummy error-${numErrors}`}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
@@ -112,7 +121,6 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
-        <button onClick={handleClick}>Incrementar</button>
       </main>
     </div>
   );
