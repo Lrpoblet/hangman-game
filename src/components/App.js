@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import {Route} from 'react-router-dom';
 // import callToApi from '../services/api';
 // import ls from '../services/localStorage';
@@ -7,7 +7,7 @@ import '../styles/App.scss';
 
 function App() {
   // VARIABLES ESTADO
-  const [word, setWord] = useState('hola');
+  const [word, setWord] = useState('');
   const wordLetters = word.split('');
   const [lastLetter, setLastLetter] = useState('');
   const [allowed, setAllowed] = useState(false);
@@ -15,6 +15,13 @@ function App() {
   const { errorLettersList, numErrors } = renderErrorLetters();
 
   // USE EFFECT
+  useEffect(() => {
+    fetch('https://random-word-api.herokuapp.com/word')
+      .then((response) => response.json())
+      .then((responseData) => {
+        setWord(responseData[0]);
+      });
+  }, []);
 
   // FUNCIONES HANDLER
   const handleFormSubmit = (ev) => {
